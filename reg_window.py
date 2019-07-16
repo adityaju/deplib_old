@@ -24,6 +24,8 @@ def start_listAll_members():
 
         if searchedMembers == -1:
             messagebox.showinfo("","Member Not Found")
+            reg_win.destroy()
+            start_listAll_members()
         else:
             for member in searchedMembers:
                 tree.insert('',0,text='', value = member)
@@ -58,7 +60,7 @@ def start_listAll_members():
     tree.pack()
     reg_win.mainloop()
 
-    
+
 
 def start_reg_win():
 
@@ -70,12 +72,16 @@ def start_reg_win():
     def register_user():
 
         fn=reg_win_fname.get() + " " + reg_win_lname.get()
-        add_new_member(member_types_array[v.get()], reg_win_mno.get(), reg_win_email.get(),fn)
+        msg = add_new_member(member_types_array[v.get()], reg_win_mno.get(), reg_win_email.get(),fn)
 
         #if member added Successfully
-        messagebox.showinfo("Successful","Member added Successfully")
+        if msg ==1:
+            messagebox.showinfo("Successful","Member added Successfully")
+            reg_win.destroy()
         #print("Member" + fn +" Added Successful !!!")
-
+        else:
+            messagebox.showinfo('Member Already Exist',msg)
+            reg_win.destroy()
 
 
     Label(reg_win, text="Library member Registration Form").grid(row=0,column=4)

@@ -2,6 +2,7 @@ import mysql.connector as ms
 from db_credentials import setu
 
 
+
 def get_memid(mem_name):
     id = setu.cursor()
     query = "SELECT member_id from members where full_name=\'"+mem_name+"\';"
@@ -20,10 +21,14 @@ def add_new_member(m_type, m_mno, email_id,m_fullname):
     add = setu.cursor()
     query = "INSERT into members(member_type,mobile_number,email_id,full_name) values(%s,%s,%s,%s)"
     val = (m_type,m_mno,email_id,m_fullname)
-    add.execute(query,val)
-    setu.commit()
-    print(add.rowcount," Member record inserted")
+    try:
+        add.execute(query,val)
+        setu.commit()
+    except ms.IntegrityError as er:
+        return er;
 
+    print(add.rowcount," Member record inserted")
+    return 1;
 
 
 def display_all_members1():

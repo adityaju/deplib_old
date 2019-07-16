@@ -5,6 +5,8 @@ from datetime import datetime
 from tkinter import messagebox
 import os
 import mysql.connector as ms
+from barVideo1 import barScan
+
 
 from db_credentials import setu
 from members import *
@@ -12,6 +14,14 @@ from books import *
 from reg_window import *
 from book_window import *
 from borrow_window import *
+
+
+
+def start_barscan():
+    barText = barScan()
+    brOp = Label(frametwo, text = barText)
+    brOp.grid(row=3,column=0)
+    #lblName = Label(fla, text = "BOOKS",bg="lightgrey",fg = "red", font = ('arial',30,'bold'),bd = 20)
 
 
 
@@ -60,6 +70,8 @@ lbladdress.grid(row = 0, column = 3)
 
 #buttons
 
+act_barScan_win = Button(frametwo, text="Barcode Scanner", padx = 16, pady = 16, bd =8, fg = "black",bg = "lightyellow", font = ('arial',16), width = 15, height = 1,command = start_barscan).grid(row = 2, column = 0)
+
 act_addbook_win = Button(fla,text = 'Add book', padx = 16, pady = 16, bd =8, fg = "black",bg = "lightyellow", font = ('arial',16), width = 15, height = 1,command = start_addbook_win).grid(row = 1, column = 0)
 
 act_searchBook_win = Button(fla,text = 'Search book', padx = 16, pady = 16, bd =8, fg = "black",bg = "lightyellow", font = ('arial',16), width = 15, height = 1,command = start_searchBook_win).grid(row = 2, column = 0)
@@ -79,15 +91,10 @@ act_unreturned_books = tk.Button(fla,text="Unreturned Books",padx = 16, pady = 1
 exit = Button(flb,text = 'Exit', padx = 16, pady = 16, bd =8, fg = "black",bg = "red", font = ('arial',16,'bold'), width = 20, height = 1, command= root.destroy).grid(row = 0, column = 1)
 
 
-
-
-
-
-
 lbldate = Label(frametwo,textvariable = dateoforder, font = ('arial',21,'bold')).grid(row = 0, column = 0)
 lbltime = Label(frametwo,textvariable = timeoforder, font = ('arial',21,'bold')).grid(row = 1, column = 0)
-txtsalary = Text(frametwo, height = 22, width = 34, bd = 16, font=('arial',12,'bold'))
-txtsalary.grid(row = 2, column = 0)
+#txtsalary = Text(frametwo, height = 10, width = 30, bd = 16, font=('arial',12,'bold'))
+#txtsalary.grid(row = 3, column = 0)
 
 
 lblinfo = Label(Topframe, font =('arial', 60, 'bold'), bg = "lightblue",fg = "Blue", text = "   MIT Academy of Engineering     ", bd = 10,)

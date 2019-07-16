@@ -1,6 +1,14 @@
 import mysql.connector as ms
 from db_credentials import setu
 
+
+def delete_book(accn_no):
+    delete = setu.cursor()
+    query = "DELETE from books where accession_number=\'"+accn_no+"\'"
+    print(query)
+    delete.execute(query)
+    setu.commit()
+
 def is_book_available(book_acn):
     status = setu.cursor()
     print(book_acn)
@@ -21,8 +29,8 @@ def is_book_available(book_acn):
 
 def add_new_book(acn, title, price, author, publisher):
     add = setu.cursor()
-    query = "INSERT INTO books(accession_number, title, price, author, publisher) values(%s,%s,%s,%s,%s)"
-    val = (acn, title, price, author, publisher)
+    query = "INSERT INTO books(accession_number, title, price, author, publisher, is_available) values(%s,%s,%s,%s,%s,%s)"
+    val = (acn, title, price, author, publisher,'1')
     try:
         add.execute(query,val)
 
@@ -31,11 +39,11 @@ def add_new_book(acn, title, price, author, publisher):
         return err_msg
     setu.commit()
     print(str(add.rowcount)+" Book added Successfully");
-    return 0;
+    return True;
 
 def search_book(searchby,searchfor):
     arz = setu.cursor()
-    query = "SELECT accession_number, title, author, shelf_no, publisher, price from books where "+searchby+" like \'"+searchfor+"%\';"
+    query = "SELECT accession_number, title, author, shelf_no, publisher, price, is_available from books where "+searchby+" like \'"+searchfor+"%\';"
     print(query)
     arz.execute(query)
     book = arz.fetchall()

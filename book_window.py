@@ -23,18 +23,35 @@ def start_searchBook_win():
     v=IntVar()
 
     def selectItem(a):
+        def trig_deleteBook():
+            val = focus['values']
+            #print(val)
+            msg = "Delete Book: "+val[1]+" Accn. No: "+str(val[0])
+            x = messagebox.askokcancel("Delete Book!",msg)
+
+            if(x):
+                delete_book(str(val[0]))
+                book_win.destroy()
+
+
+
         CurItem = tree.focus()
         print(tree.item(CurItem))
+        Button(book_win, text="Delete Book Detail", command = trig_deleteBook).pack(side=LEFT)
+        focus = tree.item(CurItem)
 
     def searchit():
         clearTable(tree)
         print(tkvar.get())
         searchedBook = search_book(tkvar.get(), searchField.get())
+
         if searchedBook == -1:
             messagebox.showinfo("","Book Not Found")
+            book_win.destroy()
         else:
             for book in searchedBook:
                 tree.insert('',0, text='', value = book)
+
 
 
 
@@ -53,19 +70,21 @@ def start_searchBook_win():
     Button(book_win, text='Exit', command = book_win.destroy)
     #Book table
     tree = ttk.Treeview(book_win)
-    tree["column"] = ("acn", "title", "author", "shlfno.", "publisher", "price")
+    tree["column"] = ("acn", "title", "author", "shlfno.", "publisher", "price", "Available")
     tree.column("acn", width=100)
     tree.column("title", width=150)
     tree.column("author", width=100)
     tree.column("shlfno.", width=80)
     tree.column("publisher", width=100)
-    tree.column("price", width=100)
+    tree.column("price", width=50)
+    tree.column("Available", width=70)
     tree.heading("acn", text="Accession No.")
     tree.heading("title", text="Title")
     tree.heading("author", text="Author")
     tree.heading("shlfno.", text="Shelf no")
     tree.heading("publisher", text="Publisher")
     tree.heading("price", text="Price")
+    tree.heading("Available",text="Available")
     tree.bind('<ButtonRelease-1>', selectItem)
     tree.pack()
     mainloop()
@@ -179,9 +198,19 @@ def start_addbook_win():
     book_win.geometry("900x600+300+300")
     #book_win.overrideredirect(1)  ## removes the title bar and min/max/close default options
     def addBook():
+        #if(isinstance(book_win_price.get(),str)):
+        #    messagebox.showinfo('Error','Wrong data entry in \'Price\' ')
+        #    book_win.destroy()
+
         status = add_new_book(book_win_acno.get(), book_win_title.get(), book_win_price.get(), book_win_author.get(), book_win_pub.get())
         if status!=0:
+            book_win.destroy()
             messagebox.showinfo('Error','Accession Number already exist')
+        else:
+            temp = book_win_title.get()
+            msg = temp + ' Added into Database successfully'
+            book_win.destroy()
+            messagebox.showinfo('Success',msg)
 
 
     Label(book_win, text="Accession Number:").grid(row=1,column=4)
